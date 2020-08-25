@@ -8,7 +8,7 @@ Feature: Karate demo
     #Получение токена
     * def authRequest =
     """
-      {"login": "admin", "password": "admin"}'
+      {"username": "admin", "password": "admin"}'
     """
     Given path '/authenticate'
     And request authRequest
@@ -65,3 +65,10 @@ Feature: Karate demo
     And header Authorization = 'Bearer ' + token
     Then method delete
     Then status 200
+
+    #Удаление сообщения (Not found)
+    Given path '/message/' + messageId
+    And header Content-type = 'application/json;charset=UTF-8'
+    And header Authorization = 'Bearer ' + token
+    Then method delete
+    Then status 404
