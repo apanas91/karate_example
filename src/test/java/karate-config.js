@@ -15,7 +15,8 @@ function fn() {
     //Задаем конфиги в зависимости от окружения
     if (env == 'test') {
         config.baseUrl = 'http://localhost:8080'
-    } else if (env == 'dev') {
+
+    } else if (env == 'test') {
         config.baseUrl = 'http://localhost:8080'
     }
     return config;

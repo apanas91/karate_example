@@ -10,7 +10,7 @@ Feature: Karate demo
     """
       {"username": "admin", "password": "admin"}'
     """
-    Given path '/authenticate'
+    Given path '/api/v1/authenticate'
     And request authRequest
     And header Content-type = 'application/json;charset=UTF-8'
     Then method post
@@ -18,12 +18,24 @@ Feature: Karate demo
     Then match response.token != null
     * def token = response.token
 
+    #Получение списка пользователей
+    Given path '/api/v1/user'
+    And header Content-type = 'application/json;charset=UTF-8'
+    And header Authorization = 'Bearer ' + token
+    Then method get
+    Then status 200
+    * def recipientId = response[0].id
+
+
     #Добавление сообщения
     * def newMessage =
     """
-      {"text": "Hello, Karate"}
+      {
+      "text": "Hello, Karate",
+      "recipient": #(recipientId)
+      }
     """
-    Given path '/message'
+    Given path '/api/v1/message'
     And request newMessage
     And header Content-type = 'application/json;charset=UTF-8'
     And header Authorization = 'Bearer ' + token
@@ -33,7 +45,7 @@ Feature: Karate demo
     * def messageId = response.id
 
     #Получение записи
-    Given path '/message/' + messageId
+    Given path '/api/v1/message/' + messageId
     And header Content-type = 'application/json;charset=UTF-8'
     And header Authorization = 'Bearer ' + token
     Then method get
@@ -44,7 +56,7 @@ Feature: Karate demo
     """
       {"text": "Karate test"}
     """
-    Given path '/message/' + messageId
+    Given path '/api/v1/message/' + messageId
     And request editMessage
     And header Content-type = 'application/json;charset=UTF-8'
     And header Authorization = 'Bearer ' + token
@@ -53,21 +65,21 @@ Feature: Karate demo
     Then match response.text == "Karate test"
 
     #Получение всех сообщений
-    Given path '/message'
+    Given path '/api/v1/message'
     And header Content-type = 'application/json;charset=UTF-8'
     And header Authorization = 'Bearer ' + token
     Then method get
     Then status 200
 
     #Удаление сообщения
-    Given path '/message/' + messageId
+    Given path '/api/v1/message/' + messageId
     And header Content-type = 'application/json;charset=UTF-8'
     And header Authorization = 'Bearer ' + token
     Then method delete
     Then status 200
 
     #Удаление сообщения (Not found)
-    Given path '/message/' + messageId
+    Given path '/api/v1/message/' + messageId
     And header Content-type = 'application/json;charset=UTF-8'
     And header Authorization = 'Bearer ' + token
     Then method delete
