@@ -1,2 +1,2 @@
 # karate_example
-Автотесты API с использованием Karate
+Автотесты API (UI) с использованием Karate
