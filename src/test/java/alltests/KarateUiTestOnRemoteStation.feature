@@ -1,8 +1,9 @@
+@ui
 Feature: Karate demo
   Background:
     And def username = 'username'
     And def password = 'password'
-    * configure driver = { type: 'chromedriver', start: false, webDriverUrl: 'http://192.168.100.22:4444/wd/hub', timeout: 120000 }
+    * configure driver = { type: 'chromedriver', start: false, webDriverUrl: 'http://localhost:4444/wd/hub', timeout: 120000 }
   Scenario: SignInGithub (Запуск на удаленную машину)
 
     Given driver 'https://github.com/login'
